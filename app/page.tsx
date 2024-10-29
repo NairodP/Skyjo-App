@@ -108,7 +108,11 @@ export default function SkyjoApp() {
         </div>
       </div>
 
-      <div className="flex-grow flex items-center justify-center p-4 md:p-8">
+      <div
+        className={`flex-grow flex flex-col ${
+          step === 1 ? "justify-center" : "justify-start md:justify-center"
+        } items-center p-4 md:p-8 ${step !== 1 ? "pt-8 md:pt-4" : ""}`}
+      >
         <div className="w-full max-w-md">
           {step === 1 && <Welcome onStart={() => setStep(2)} />}
           {step === 2 && <PlayerSetup onSubmit={handlePlayerSetup} />}
