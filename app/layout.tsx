@@ -1,6 +1,8 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import { Zilla_Slab } from 'next/font/google';
+import { cn } from "@/lib/utils";
 import { GlobalStateProvider } from "@/context/GlobalState";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -15,6 +17,12 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const zillaSlab = Zilla_Slab({
+  subsets: ["latin"],
+  variable: "--font-zilla-slab",
+  weight: "700",
+});
+
 export const metadata: Metadata = {
   title: "Assistant Skyjo",
   description: "Application pour gérer vos parties de Skyjo",
@@ -26,19 +34,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Mate&family=Zilla+Slab:wght@700&display=swap" rel="stylesheet"
-        />
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gray-100`}
+      className={cn(geistSans.variable, geistMono.variable, zillaSlab.variable, "bg-gray-100")}
       >
         <GlobalStateProvider>
           {children}

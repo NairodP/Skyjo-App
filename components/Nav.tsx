@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RefreshCw, Table, X } from "lucide-react";
+import { RefreshCw, Table } from "lucide-react";
 import ScoreTable from "./ScoreTable";
 import { useGlobalState } from "@/context/GlobalState";
 import { Button } from "./ui/button";
