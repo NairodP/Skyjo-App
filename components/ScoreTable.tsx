@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -7,17 +6,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Player, RoundScore } from "@/types/game";
+import { Player } from "@/types/game";
 
 interface ScoreTableProps {
   players: Player[];
 }
 
 export default function ScoreTable({ players }: ScoreTableProps) {
-  const maxRounds = Math.max(...players.map((p) => p.scores?.length || 0));
+  // Vérifier que les joueurs existent avant de calculer maxRounds
+  const maxRounds = players.length
+    ? Math.max(...players.map((p) => p.scores?.length || 0))
+    : 0;
 
-  const calculateTotalScore = (scores: RoundScore[]): number => {
-    return scores ? scores.reduce((total, round) => total + round.score, 0) : 0;
+  const calculateTotalScore = (scores: number[]): number => {
+    return scores ? scores.reduce((total, score) => total + score, 0) : 0;
   };
 
   return (
@@ -39,11 +41,11 @@ export default function ScoreTable({ players }: ScoreTableProps) {
             <TableRow key={i}>
               <TableCell className="font-medium">{player.name}</TableCell>
               {player.scores?.map((score, j) => (
-                <TableCell key={j}>{score.score}</TableCell>
+                <TableCell key={j}>{score}</TableCell>
               ))}
               {[...Array(maxRounds - (player.scores?.length || 0))].map(
                 (_, j) => (
-                  <TableCell key={`empty-${j}`}>-</TableCell>
+                  <TableCell key={`empty-${i}-${j}`}>-</TableCell>
                 )
               )}
               <TableCell className="font-bold">

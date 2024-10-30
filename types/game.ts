@@ -1,15 +1,16 @@
 export interface Player {
-  name: string
-  scores: RoundScore[]
+  name: string;
+  scores: number[];
 }
 
 export interface RoundScore {
-  score: number
-  round: number
+  round: number;
+  scores: number[];  // Ajout de la propriété scores
 }
 
 export interface GameState {
-  players: Player[]
-  currentRound: number
-  isGameOver: boolean
+  players: Player[];
+  currentRound: number;
+  isGameOver: boolean;
+  roundScores: RoundScore[];
 }

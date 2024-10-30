@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { GlobalStateProvider } from "@/context/GlobalState";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,13 +28,19 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
       </head>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-gray-100`}
       >
-        {children}
+        <GlobalStateProvider>
+          {children}
+          <Toaster />
+        </GlobalStateProvider>
       </body>
     </html>
   );
