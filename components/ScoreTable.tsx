@@ -27,8 +27,10 @@ export default function ScoreTable({ players }: ScoreTableProps) {
     <div className="overflow-x-auto">
       <Table className="min-w-full bg-white shadow-md rounded-lg">
         <TableHeader>
-          <TableRow className=" bg-red-300 text-black">
-            <TableHead className="w-[100px] p-4 text-black font-bold uppercase">Joueur</TableHead>
+          <TableRow className="bg-red-300 text-black">
+            <TableHead className="w-[100px] p-4 text-black font-bold uppercase sticky left-0 bg-red-300 z-10">
+              Joueur
+            </TableHead>
             {[...Array(maxRounds)].map((_, i) => (
               <TableHead key={i} className="w-[80px] p-4 text-black font-bold uppercase">
                 Manche {i + 1}
@@ -46,7 +48,9 @@ export default function ScoreTable({ players }: ScoreTableProps) {
               transition={{ duration: 0.2 }}
               className="hover:bg-gray-100"
             >
-              <TableCell className="font-medium p-4">{player.name}</TableCell>
+              <TableCell className="font-medium p-4 sticky left-0 bg-white z-10">
+                {player.name}
+              </TableCell>
               {player.scores?.map((score, j) => (
                 <TableCell key={j} className="p-4">
                   {score}
