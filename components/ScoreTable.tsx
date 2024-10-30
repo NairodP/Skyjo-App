@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Player } from "@/types/game";
+import { motion } from "framer-motion";
 
 interface ScoreTableProps {
   players: Player[];
@@ -24,34 +25,44 @@ export default function ScoreTable({ players }: ScoreTableProps) {
 
   return (
     <div className="overflow-x-auto">
-      <Table>
+      <Table className="min-w-full bg-white shadow-md rounded-lg">
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Joueur</TableHead>
+          <TableRow className=" bg-red-300 text-black">
+            <TableHead className="w-[100px] p-4 text-black font-bold uppercase">Joueur</TableHead>
             {[...Array(maxRounds)].map((_, i) => (
-              <TableHead key={i} className="w-[80px]">
+              <TableHead key={i} className="w-[80px] p-4 text-black font-bold uppercase">
                 Manche {i + 1}
               </TableHead>
             ))}
-            <TableHead className="w-[80px]">Total</TableHead>
+            <TableHead className="w-[80px] p-4 text-black font-bold uppercase">Total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {players.map((player, i) => (
-            <TableRow key={i}>
-              <TableCell className="font-medium">{player.name}</TableCell>
+            <motion.tr
+              key={i}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="hover:bg-gray-100"
+            >
+              <TableCell className="font-medium p-4">{player.name}</TableCell>
               {player.scores?.map((score, j) => (
-                <TableCell key={j}>{score}</TableCell>
+                <TableCell key={j} className="p-4">
+                  {score}
+                </TableCell>
               ))}
               {[...Array(maxRounds - (player.scores?.length || 0))].map(
                 (_, j) => (
-                  <TableCell key={`empty-${i}-${j}`}>-</TableCell>
+                  <TableCell key={`empty-${i}-${j}`} className="p-4">
+                    -
+                  </TableCell>
                 )
               )}
-              <TableCell className="font-bold">
+              <TableCell className="font-bold p-4">
                 {calculateTotalScore(player.scores)}
               </TableCell>
-            </TableRow>
+            </motion.tr>
           ))}
         </TableBody>
       </Table>

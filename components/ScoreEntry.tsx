@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -23,6 +23,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ScoreEntryProps {
   onScoreSubmitted: () => void;
@@ -96,36 +97,55 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
   };
 
   return (
-    <Card className="p-3 md:p-6">
-      <h2 className="text-xl md:text-2xl mb-3 md:mb-4">
-        Scores de la manche {state.currentRound}
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-        {state.players.map((player, index) => (
-          <div key={index}>
-            <Label className="text-sm md:text-base">{player.name}</Label>
-            <Select name={`score-${index}`} defaultValue="0">
-              <SelectTrigger className="text-sm md:text-base">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {[...Array(201)].map((_, i) => (
-                  <SelectItem
-                    key={i}
-                    value={(i - 100).toString()}
-                    className="text-sm md:text-base"
-                  >
-                    {i - 100}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        ))}
-        <Button type="submit" className="w-full text-sm md:text-base">
-          Valider la manche
-        </Button>
-      </form>
+    <div>
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center text-blue-600">Scores de la manche {state.currentRound}</CardTitle>
+          <CardDescription className="text-center">Entrez les scores pour chaque joueur</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} noValidate className="space-y-6">
+            <AnimatePresence>
+              {state.players.map((player, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-2"
+                >
+                  <Label htmlFor={`score-${index}`} className="text-sm font-medium">
+                    {player.name}
+                  </Label>
+                  <Select name={`score-${index}`} defaultValue="0">
+                    <SelectTrigger id={`score-${index}`} className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[...Array(201)].map((_, i) => (
+                        <SelectItem
+                          key={i}
+                          value={(i - 100).toString()}
+                          className="text-sm md:text-base"
+                        >
+                          {i - 100}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            <CardFooter className="px-0 pt-6">
+              <Button type="submit" className="w-full text-sm md:text-base transition-all duration-200 ease-in-out transform hover:scale-105">
+                Valider la manche
+              </Button>
+            </CardFooter>
+          </form>
+        </CardContent>
+      </Card>
 
       <Dialog
         open={isConfirmDialogOpen}
@@ -133,7 +153,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="mt-2 text-2xl" >Confirmer les scores</DialogTitle>
+            <DialogTitle className="mt-2 text-2xl">Confirmer les scores</DialogTitle>
             <DialogDescription className="mt-2 text-lg">
               Veuillez confirmer les scores suivants :
             </DialogDescription>
@@ -157,6 +177,6 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Card>
+    </div>
   );
 }

@@ -15,12 +15,16 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 
 export default function GameOver() {
   const { state, dispatch } = useGlobalState();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
+
+  const shouldWarn = state.players.length > 0 || state.currentRound > 1;
+  useBeforeUnloadWarning(shouldWarn);
 
   useEffect(() => {
     if (!state.players.length) {

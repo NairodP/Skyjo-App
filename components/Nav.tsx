@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RefreshCw, Table } from "lucide-react";
+import { RefreshCw, Table, X } from "lucide-react";
 import ScoreTable from "./ScoreTable";
 import { useGlobalState } from "@/context/GlobalState";
 import { Button } from "./ui/button";
@@ -15,6 +15,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
 
 export default function Nav() {
   const { state, dispatch } = useGlobalState();
@@ -41,62 +42,72 @@ export default function Nav() {
 
   return (
     <nav className="flex justify-end space-x-4 p-4">
-      <Button
-        variant="destructive"
-        className="p-2 bg-red-400 text-white"
-        onClick={() => setIsScoreDialogOpen(true)}
-      >
-        <Table className="w-4 h-4 md:mr-2" />
-        <span className="hidden md:inline">Voir les scores</span>
-      </Button>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          variant="destructive"
+          className="p-2 bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => setIsScoreDialogOpen(true)}
+        >
+          <Table className="w-4 h-4 md:mr-2" />
+          <span className="hidden md:inline">Voir les scores</span>
+        </Button>
+      </motion.div>
       <Dialog open={isScoreDialogOpen} onOpenChange={setIsScoreDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Scores</DialogTitle>
           </DialogHeader>
           <ScoreTable players={state.players} />
-          <Button
-            variant="ghost"
-            className="absolute top-4 right-4"
-            onClick={() => setIsScoreDialogOpen(false)}
-          ></Button>
         </DialogContent>
       </Dialog>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <Button variant="destructive" className="p-2 bg-red-400 text-white">
-            <RefreshCw className="w-4 h-4 md:mr-2" />
-            <span className="hidden md:inline">Nouvelle partie</span>
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-xl">Confirmation</DialogTitle>
-            <DialogDescription className="text-lg">
-              Êtes-vous sûr de vouloir réinitialiser la partie ? Les Scores
-              seront perdus.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center mt-4">
-            <input
-              type="checkbox"
-              id="keepPlayers"
-              checked={keepPlayers}
-              onChange={(e) => setKeepPlayers(e.target.checked)}
-              className="mr-2"
-            />
-            <label htmlFor="keepPlayers">Garder les mêmes joueurs</label>
-          </div>
-          <DialogFooter>
-            <Button className="mt-2 text-lg" variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Annuler
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button
+              variant="destructive"
+              className="p-2 bg-red-600 hover:bg-red-700 text-white"
+            >
+              <RefreshCw className="w-4 h-4 md:mr-2" />
+              <span className="hidden md:inline">Nouvelle partie</span>
             </Button>
-            <Button className="mt-2 text-lg" variant="destructive" onClick={resetGame} >
-              Oui, réinitialiser
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-xl">Confirmation</DialogTitle>
+              <DialogDescription className="text-lg">
+                Êtes-vous sûr de vouloir réinitialiser la partie ? Les Scores
+                seront perdus.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center mt-4">
+              <input
+                type="checkbox"
+                id="keepPlayers"
+                checked={keepPlayers}
+                onChange={(e) => setKeepPlayers(e.target.checked)}
+                className="mr-2"
+              />
+              <label htmlFor="keepPlayers">Garder les mêmes joueurs</label>
+            </div>
+            <DialogFooter>
+              <Button
+                className="mt-2 text-lg"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+              >
+                Annuler
+              </Button>
+              <Button
+                className="mt-2 text-lg"
+                variant="destructive"
+                onClick={resetGame}
+              >
+                Oui, réinitialiser
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </motion.div>
     </nav>
   );
 }

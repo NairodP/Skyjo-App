@@ -1,24 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-import { motion } from "framer-motion";
-import { Trophy } from "lucide-react";
-
+import { motion, AnimatePresence } from "framer-motion";
+import { Trophy, ArrowRight } from "lucide-react";
 import { useGlobalState } from "@/context/GlobalState";
-
 import ScoreEntry from "@/components/ScoreEntry";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 
 export default function RoundStart() {
   const router = useRouter();
   const { dispatch, state } = useGlobalState();
   const [showScoreEntry, setShowScoreEntry] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!state.players.length) {
-    router.push("/playerSetup");
+  const shouldWarn = state.players.length > 0 || state.currentRound > 1;
+  useBeforeUnloadWarning(shouldWarn);
+
+  useEffect(() => {
+    if (!state.players.length) {
+      router.push("/playerSetup");
+    } else {
+      setIsLoading(false);
+    }
+  }, [state.players, router]);
+
+  if (isLoading) {
     return null;
   }
 
@@ -27,7 +37,6 @@ export default function RoundStart() {
   };
 
   const handleScoreSubmitted = () => {
-    // Vérifier si un joueur a atteint ou dépassé 100 points
     const isGameOver = state.players.some(
       (player) =>
         player.scores.reduce((total, score) => total + score, 0) >= 100
@@ -37,46 +46,61 @@ export default function RoundStart() {
       dispatch({ type: "SET_IS_GAME_OVER", payload: true });
       router.push("/gameOver");
     } else {
+      dispatch({ type: "SET_CURRENT_ROUND", payload: state.currentRound + 1 });
       setShowScoreEntry(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+    <div className="min-h-screen flex bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+      <div className="flex-grow flex  flex-col items-center justify-center">
       {state.players.length > 0 && <Nav />}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-md w-full bg-white rounded-lg shadow-lg p-6"
-      >
-        {!showScoreEntry ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center px-4 md:px-0"
-          >
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">
-              Manche {state.currentRound}
-            </h2>
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 2 }}
-              className="mb-4"
-            >
-              <Trophy size={48} className="mx-auto text-blue-600" />
-            </motion.div>
-            <Button
-              onClick={handleContinue}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base py-2 px-4 rounded-lg shadow-md"
-            >
-              Entrer les scores
-            </Button>
-          </motion.div>
-        ) : (
-          <ScoreEntry onScoreSubmitted={handleScoreSubmitted} />
-        )}
-      </motion.div>
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <AnimatePresence mode="wait">
+              {!showScoreEntry ? (
+                <motion.div
+                  key="round-start"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center"
+                >
+                  <CardHeader>
+                    <CardTitle className="text-3xl font-bold text-blue-600">Manche {state.currentRound}</CardTitle>
+                    <CardDescription>Préparez-vous pour la prochaine manche !</CardDescription>
+                  </CardHeader>
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="mb-6"
+                  >
+                    <Trophy size={64} className="mx-auto text-yellow-500" />
+                  </motion.div>
+                  <Button
+                    onClick={handleContinue}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-lg py-2 px-6 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:scale-105"
+                  >
+                    Entrer les scores
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="score-entry"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ScoreEntry onScoreSubmitted={handleScoreSubmitted} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
