@@ -16,6 +16,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
+import { Vortex } from "@/components/ui/vortex";
+import Image from "next/image";
 
 export default function GameOver() {
   const { state, dispatch } = useGlobalState();
@@ -65,6 +67,21 @@ export default function GameOver() {
     setIsDialogOpen(false);
   };
 
+  const logoVariants = {
+    hidden: { opacity: 0, scale: 0.5, rotate: -180 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+        duration: 0.7,
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4">
       <motion.div
@@ -74,6 +91,26 @@ export default function GameOver() {
         className="max-w-md w-full bg-white rounded-lg shadow-lg p-6"
       >
         <Card className="p-4 md:p-6 space-y-4">
+        <motion.div
+              variants={logoVariants}
+              initial="hidden"
+              animate="visible"
+              className="mb-8 relative mx-auto rounded-md w-[calc(100%-1rem)]  h-[5rem] overflow-hidden"
+            >
+              <Vortex
+                backgroundColor="black"
+                className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
+              >
+                <Image
+                  src="/image/skyjo-logo-title.png"
+                  alt="Skyjo Logo"
+                  fill
+                  priority
+                  className="object-contain"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                />
+              </Vortex>
+            </motion.div>
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
             Fin de la partie
           </h2>
