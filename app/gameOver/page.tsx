@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScoreTable from "@/components/ScoreTable";
 import { useGlobalState } from "@/context/GlobalState";
@@ -83,41 +83,44 @@ export default function GameOver() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+    <div
+      id="test"
+      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4"
+    >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-md w-full bg-white rounded-lg shadow-lg p-6"
+        className="max-w-md w-full"
       >
-        <Card className="p-4 md:p-6 space-y-4">
-        <motion.div
-              variants={logoVariants}
-              initial="hidden"
-              animate="visible"
-              className="mb-8 relative mx-auto rounded-md w-[calc(100%-1rem)]  h-[5rem] overflow-hidden"
+        <Card className="space-y-4">
+          <motion.div
+            variants={logoVariants}
+            initial="hidden"
+            animate="visible"
+            className="mb-8 relative mx-auto rounded-md w-full h-[5rem] overflow-hidden"
+          >
+            <Vortex
+              backgroundColor="black"
+              className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
             >
-              <Vortex
-                backgroundColor="black"
-                className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
-              >
-                <Image
-                  src="/image/skyjo-logo-title.png"
-                  alt="Skyjo Logo"
-                  fill
-                  priority
-                  className="object-contain"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-              </Vortex>
-            </motion.div>
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+              <Image
+                src="/image/skyjo-logo-title.png"
+                alt="Skyjo Logo"
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
+            </Vortex>
+          </motion.div>
+          <h2 className="font-zillaSlab uppercase text-2xl md:text-3xl text-center mb-4">
             Fin de la partie
           </h2>
 
           {/* Afficher seulement si winner et loser existent */}
           {winner && loser ? (
-            <div className="text-center mb-4">
+            <div className="text-center mb-4 p-4 md:p-6">
               <p className="text-lg md:text-xl">
                 <span className="font-semibold">{winner.name}</span> a gagné
                 avec {winner.scores.reduce((sum, score) => sum + score, 0)}{" "}
@@ -129,15 +132,20 @@ export default function GameOver() {
               </p>
             </div>
           ) : (
-            <p className="text-center text-lg md:text-xl">
+            <p className="text-center text-lg md:text-xl p-4 md:p-6">
               Préparez-vous pour une nouvelle partie !
             </p>
           )}
 
           <ScoreTable players={state.players} />
-          <Button onClick={() => setIsDialogOpen(true)} className="w-full mt-4">
-            Nouvelle partie
-          </Button>
+          <CardFooter className="p-4 md:p-6 pt-6 pb-8">
+            <Button
+              onClick={() => setIsDialogOpen(true)}
+              className="w-full mt-4"
+            >
+              Nouvelle partie
+            </Button>
+          </CardFooter>
         </Card>
       </motion.div>
 

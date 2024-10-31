@@ -97,13 +97,13 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
   };
 
   return (
-    <div>
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader>
+    <>
+      <Card className="w-full max-w-md border-none shadow-none p-0 m-0">
+        <CardHeader className="w-full max-w-md border-none shadow-none p-0 m-0">
           <CardTitle className="text-2xl font-bold text-center text-blue-600">Scores de la manche {state.currentRound}</CardTitle>
           <CardDescription className="text-center">Entrez les scores pour chaque joueur</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="w-full max-w-md border-none shadow-none p-0 m-0">
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
             <AnimatePresence>
               {state.players.map((player, index) => (
@@ -177,6 +177,6 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
