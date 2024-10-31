@@ -98,7 +98,7 @@ export default function GameOver() {
             variants={logoVariants}
             initial="hidden"
             animate="visible"
-            className="mb-8 relative mx-auto rounded-md w-full h-[5rem] overflow-hidden"
+            className="mb-8 relative mx-auto rounded-md rounded-b-none w-full h-[5rem] overflow-hidden shadow-xl"
           >
             <Vortex
               backgroundColor="black"
@@ -138,7 +138,7 @@ export default function GameOver() {
           )}
 
           <ScoreTable players={state.players} />
-          <CardFooter className="p-4 md:p-6 pt-6 pb-8">
+          <CardFooter className="p-6 pb-12">
             <Button
               onClick={() => setIsDialogOpen(true)}
               className="w-full mt-4"

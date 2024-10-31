@@ -2,7 +2,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -69,8 +76,9 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     dispatch({ type: "ADD_ROUND_SCORE", payload: submittedScores });
 
     // Vérifier si c'est la fin de la partie
-    const isGameOver = updatedPlayers.some(player =>
-      player.scores.reduce((total, score) => total + score, 0) >= 100
+    const isGameOver = updatedPlayers.some(
+      (player) =>
+        player.scores.reduce((total, score) => total + score, 0) >= 100
     );
 
     if (isGameOver) {
@@ -100,11 +108,15 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     <>
       <Card className="w-full max-w-md border-none shadow-none p-0 m-0">
         <CardHeader className="w-full max-w-md border-none shadow-none p-0 m-0">
-          <CardTitle className="text-2xl font-bold text-center text-blue-600">Scores de la manche {state.currentRound}</CardTitle>
-          <CardDescription className="text-center">Entrez les scores pour chaque joueur</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center text-blue-600">
+            Scores de la manche {state.currentRound}
+          </CardTitle>
+          <CardDescription className="text-center">
+            Entrez les scores pour chaque joueur
+          </CardDescription>
         </CardHeader>
         <CardContent className="w-full max-w-md border-none shadow-none p-0 m-0">
-          <form onSubmit={handleSubmit} noValidate className="space-y-6">
+          <form onSubmit={handleSubmit} noValidate className="space-y-6 mt-6">
             <AnimatePresence>
               {state.players.map((player, index) => (
                 <motion.div
@@ -115,7 +127,10 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
                   transition={{ duration: 0.2 }}
                   className="space-y-2"
                 >
-                  <Label htmlFor={`score-${index}`} className="text-sm font-medium">
+                  <Label
+                    htmlFor={`score-${index}`}
+                    className="text-sm font-medium"
+                  >
                     {player.name}
                   </Label>
                   <Select name={`score-${index}`} defaultValue="0">
@@ -139,7 +154,10 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
             </AnimatePresence>
 
             <CardFooter className="px-0 pt-6">
-              <Button type="submit" className="w-full text-sm md:text-base transition-all duration-200 ease-in-out transform hover:scale-105">
+              <Button
+                type="submit"
+                className="w-full text-sm md:text-base transition-all duration-200 ease-in-out transform hover:scale-105"
+              >
                 Valider la manche
               </Button>
             </CardFooter>
@@ -147,13 +165,12 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
         </CardContent>
       </Card>
 
-      <Dialog
-        open={isConfirmDialogOpen}
-        onOpenChange={setIsConfirmDialogOpen}
-      >
+      <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="mt-2 text-2xl">Confirmer les scores</DialogTitle>
+            <DialogTitle className="mt-2 text-2xl">
+              Confirmer les scores
+            </DialogTitle>
             <DialogDescription className="mt-2 text-lg">
               Veuillez confirmer les scores suivants :
             </DialogDescription>
@@ -168,10 +185,18 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
               ))}
           </div>
           <DialogFooter>
-            <Button className="mt-2 text-lg" variant="outline" onClick={() => setIsConfirmDialogOpen(false)}>
+            <Button
+              className="mt-2 text-lg"
+              variant="outline"
+              onClick={() => setIsConfirmDialogOpen(false)}
+            >
               Annuler
             </Button>
-            <Button className="mt-2 text-lg" variant="destructive" onClick={handleConfirm}>
+            <Button
+              className="mt-2 text-lg"
+              variant="destructive"
+              onClick={handleConfirm}
+            >
               Confirmer
             </Button>
           </DialogFooter>
