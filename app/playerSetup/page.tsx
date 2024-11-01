@@ -59,6 +59,10 @@ export default function PlayerSetup() {
     setPlayers(newPlayers);
   };
 
+  const resetZoom = () => {
+    document.body.style.zoom = "100%";
+  };
+
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -89,6 +93,7 @@ export default function PlayerSetup() {
     setShowValidation(true);
     setTimeout(() => {
       setShowValidation(false);
+      resetZoom();
       router.push("/roundStart");
     }, 1500);
   };
