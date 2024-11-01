@@ -184,10 +184,10 @@ export default function GameOver() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-[90%] rounded-lg border-sm">
           <DialogHeader>
-            <DialogTitle className="text-xl">Nouvelle partie</DialogTitle>
-            <DialogDescription className="text-lg">
+            <DialogTitle className="text-[#1a326e] mt-2 text-2xl">Nouvelle partie</DialogTitle>
+            <DialogDescription className="mt-2 text-lg">
               Voulez-vous garder les mêmes joueurs pour la nouvelle partie ?
             </DialogDescription>
           </DialogHeader>
@@ -212,6 +212,7 @@ export default function GameOver() {
             <Button
               className="mt-2 text-lg"
               variant="destructive"
+              style={{ backgroundColor: "#fbb6ff" }}
               onClick={resetGame}
             >
               Confirmer

@@ -79,7 +79,7 @@ export default function Nav() {
           </DialogTrigger>
           <DialogContent className="max-w-[90%] rounded-lg border-sm">
             <DialogHeader>
-              <DialogTitle className="text-[#1a326e]  mt-2 text-2xl">Confirmation</DialogTitle>
+              <DialogTitle className="text-[#1a326e] mt-2 text-2xl">Confirmation</DialogTitle>
               <DialogDescription className="mt-2 text-lg">
                 Êtes-vous sûr de vouloir réinitialiser la partie ? Les Scores
                 seront perdus.
