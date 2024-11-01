@@ -77,10 +77,10 @@ export default function Nav() {
               <span className="hidden md:inline">Nouvelle partie</span>
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-[90%] rounded-lg border-sm">
             <DialogHeader>
-              <DialogTitle className="text-xl">Confirmation</DialogTitle>
-              <DialogDescription className="text-lg">
+              <DialogTitle className="text-[#1a326e]  mt-2 text-2xl">Confirmation</DialogTitle>
+              <DialogDescription className="mt-2 text-lg">
                 Êtes-vous sûr de vouloir réinitialiser la partie ? Les Scores
                 seront perdus.
               </DialogDescription>
@@ -106,6 +106,7 @@ export default function Nav() {
               <Button
                 className="mt-2 text-lg"
                 variant="destructive"
+                style={{ backgroundColor: "#fbb6ff" }}
                 onClick={resetGame}
               >
                 Oui, réinitialiser
