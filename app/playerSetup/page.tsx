@@ -2,7 +2,14 @@
 
 import React, { useState } from "react";
 import { Check, Users } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import {
@@ -18,6 +25,7 @@ import { Player } from "@/types/game";
 import { useToast } from "@/hooks/use-toast";
 import { useGlobalState } from "@/context/GlobalState";
 import { motion, AnimatePresence } from "framer-motion";
+import BackButton from "@/components/BackButton";
 
 export default function PlayerSetup() {
   const router = useRouter();
@@ -56,7 +64,8 @@ export default function PlayerSetup() {
 
     if (players.some((player) => player.name.trim() === "")) {
       toast({
-        description: "Veuillez saisir le pseudo de l'ensemble des participants.",
+        description:
+          "Veuillez saisir le pseudo de l'ensemble des participants.",
         variant: "destructive",
         duration: 2000,
       });
@@ -86,10 +95,15 @@ export default function PlayerSetup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+      <BackButton />
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center text-blue-600">Configuration des joueurs</CardTitle>
-          <CardDescription className="text-center">Entrez les noms des joueurs pour commencer la partie</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center text-blue-600">
+            Configuration des joueurs
+          </CardTitle>
+          <CardDescription className="text-center">
+            Entrez les noms des joueurs pour commencer la partie
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleFormSubmit} noValidate className="space-y-6">
@@ -124,13 +138,18 @@ export default function PlayerSetup() {
                   transition={{ duration: 0.2 }}
                   className="space-y-2"
                 >
-                  <Label htmlFor={`player-${index}`} className="text-sm font-medium">
+                  <Label
+                    htmlFor={`player-${index}`}
+                    className="text-sm font-medium"
+                  >
                     Joueur {index + 1}
                   </Label>
                   <Input
                     id={`player-${index}`}
                     value={player.name}
-                    onChange={(e) => handlePlayerNameChange(index, e.target.value)}
+                    onChange={(e) =>
+                      handlePlayerNameChange(index, e.target.value)
+                    }
                     placeholder={`Nom du joueur ${index + 1}`}
                     required
                     className="w-full"
@@ -140,7 +159,10 @@ export default function PlayerSetup() {
             </AnimatePresence>
 
             <CardFooter className="px-0 pt-6">
-              <Button type="submit" className="w-full text-sm md:text-base transition-all duration-200 ease-in-out transform hover:scale-105">
+              <Button
+                type="submit"
+                className="w-full text-sm md:text-base transition-all duration-200 ease-in-out transform hover:scale-105"
+              >
                 {showValidation ? (
                   <Check className="mr-2 h-4 w-4" />
                 ) : (

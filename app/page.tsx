@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play } from "lucide-react";
 import { useGlobalState } from "@/context/GlobalState";
-import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Vortex } from "@/components/ui/vortex";
+import GlowingButton from "@/components/GlowingButton";
+import { BackgroundLines } from "@/components/ui/background-lines";
 
 export default function HomePage() {
   const { state } = useGlobalState();
@@ -56,11 +55,10 @@ export default function HomePage() {
   };
 
   const logoVariants = {
-    hidden: { opacity: 0, scale: 0.5, rotate: -180 },
+    hidden: { opacity: 0, x: -100 },
     visible: {
       opacity: 1,
-      scale: 1,
-      rotate: 0,
+      x: 0,
       transition: {
         type: "spring",
         stiffness: 260,
@@ -71,11 +69,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-sky-100 text-blue-900">
+    <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
       {shouldShowNav && <Nav />}
 
       <motion.div
-        className="flex flex-col items-center pt-16 px-2 min-h-screen"
+        className="flex flex-col items-center pt-16 px-2 min-h-screen relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -143,19 +141,13 @@ export default function HomePage() {
                 />
               </motion.div>
 
-              <Link href="/playerSetup">
-                <Button
-                  size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-lg md:text-xl font-bold uppercase tracking-wider px-8 py-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-                >
-                  <Play className="mr-2 w-6 h-6 md:w-7 md:h-7" />
-                  COMMENCER UNE PARTIE
-                </Button>
-              </Link>
+              <GlowingButton href="/playerSetup">
+                COMMENCER UNE PARTIE
+              </GlowingButton>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
-    </div>
+    </BackgroundLines>
   );
 }

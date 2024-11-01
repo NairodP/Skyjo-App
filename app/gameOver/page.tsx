@@ -18,6 +18,8 @@ import {
 import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 import { Vortex } from "@/components/ui/vortex";
 import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
+import { Home } from "lucide-react";
 
 export default function GameOver() {
   const { state, dispatch } = useGlobalState();
@@ -84,9 +86,8 @@ export default function GameOver() {
 
   return (
     <div
-      id="test"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4"
-    >
+      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4 relative"
+      >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -138,12 +139,21 @@ export default function GameOver() {
           )}
 
           <ScoreTable players={state.players} />
-          <CardFooter className="p-6 pb-12">
+          <CardFooter className="p-6 pb-12 flex flex-col text-center">
             <Button
               onClick={() => setIsDialogOpen(true)}
               className="w-full mt-4"
             >
               Nouvelle partie
+            </Button>
+            <Separator className="my-4" />
+            <Button
+              onClick={() => router.push("/")}
+              variant="outline"
+              className="w-full"
+            >
+              <Home className="mr-2" size={20} />
+              Accueil
             </Button>
           </CardFooter>
         </Card>
