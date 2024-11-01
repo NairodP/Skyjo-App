@@ -27,8 +27,8 @@ export default function ScoreTable({ players }: ScoreTableProps) {
     <div className="overflow-x-auto">
       <Table className="min-w-full bg-white shadow-md rounded-lg">
         <TableHeader>
-          <TableRow className="bg-red-300 text-black">
-            <TableHead className="w-[100px] p-4 text-black font-bold uppercase sticky left-0 bg-red-300 z-10">
+          <TableRow className="bg-[#9694ff] text-black">
+            <TableHead className="w-[100px] p-4 text-black font-bold uppercase sticky left-0 bg-[#9694ff] z-10">
               Joueur
             </TableHead>
             {[...Array(maxRounds)].map((_, i) => (
