@@ -74,7 +74,7 @@ export default function HomePage() {
       {shouldShowNav && <Nav />}
       {showBackgroundLines && (
         // eslint-disable-next-line react/no-children-prop
-        <BackgroundLines className="absolute inset-0 h-full bg-sky-100" children={undefined} />
+        <BackgroundLines className="absolute inset-0 min-h-screen bg-sky-100" children={undefined} />
       )}
       <motion.div
         className="flex flex-col items-center pt-16 px-2 min-h-screen relative z-10"
