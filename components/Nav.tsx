@@ -45,7 +45,10 @@ export default function Nav() {
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
           variant="destructive"
-          className="p-2 bg-blue-600 hover:bg-blue-700 text-white"
+          className="p-2 text-white"
+          style={{
+            backgroundImage: "linear-gradient(to right, #7a47ff, #408cff)",
+          }}
           onClick={() => setIsScoreDialogOpen(true)}
         >
           <Table className="w-4 h-4 md:mr-2" />
@@ -65,7 +68,10 @@ export default function Nav() {
           <DialogTrigger asChild>
             <Button
               variant="destructive"
-              className="p-2 bg-red-600 hover:bg-red-700 text-white"
+              className="p-2 text-white"
+              style={{
+                backgroundImage: "linear-gradient(to right, #e14df7, #7931c0)",
+              }}
             >
               <RefreshCw className="w-4 h-4 md:mr-2" />
               <span className="hidden md:inline">Nouvelle partie</span>

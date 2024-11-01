@@ -68,7 +68,7 @@ export default function RoundStart() {
                   className="text-center"
                 >
                   <CardHeader>
-                    <CardTitle className="text-3xl font-bold text-blue-600">Manche {state.currentRound}</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-[#421e69]">Manche {state.currentRound}</CardTitle>
                     <CardDescription>Préparez-vous pour la prochaine manche !</CardDescription>
                   </CardHeader>
                   <motion.div
@@ -80,7 +80,7 @@ export default function RoundStart() {
                   </motion.div>
                   <Button
                     onClick={handleContinue}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-lg py-2 px-6 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:scale-105"
+                    className="bg-gradient-to-r from-custom-purple to-custom-blue text-white text-lg py-2 px-6 rounded-full shadow-md"
                   >
                     Entrer les scores
                     <ArrowRight className="ml-2 h-5 w-5" />

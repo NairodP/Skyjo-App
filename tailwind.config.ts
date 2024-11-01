@@ -18,6 +18,8 @@ const config: Config = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "custom-purple": "#a430c8",
+        "custom-blue": "#1a326e",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -71,7 +73,7 @@ const config: Config = {
     fourth: "moveHorizontal 40s ease infinite",
     fifth: "moveInCircle 20s ease infinite",
     disco: "disco 4s linear infinite",
-		glow: "glow 2s ease-in-out infinite alternate",
+    glow: "glow 2s ease-in-out infinite alternate",
   },
 
   keyframes: {
@@ -79,10 +81,10 @@ const config: Config = {
       "0%": { transform: "rotate(0deg)" },
       "100%": { transform: "rotate(360deg)" },
     },
-		glow: {
-			"0%": { opacity: 0.5, transform: "scale(0.95)" },
-			"100%": { opacity: 1, transform: "scale(1.05)" },
-		},
+    glow: {
+      "0%": { opacity: 0.5, transform: "scale(0.95)" },
+      "100%": { opacity: 1, transform: "scale(1.05)" },
+    },
     moveHorizontal: {
       "0%": {
         transform: "translateX(-50%) translateY(-10%)",

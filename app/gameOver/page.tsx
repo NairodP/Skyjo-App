@@ -20,12 +20,14 @@ import { Vortex } from "@/components/ui/vortex";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Home } from "lucide-react";
+import Confetti from "react-confetti";
 
 export default function GameOver() {
   const { state, dispatch } = useGlobalState();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(true);
 
   const shouldWarn = state.players.length > 0 || state.currentRound > 1;
   useBeforeUnloadWarning(shouldWarn);
@@ -35,6 +37,13 @@ export default function GameOver() {
       router.push("/playerSetup");
     }
   }, [state.players, router]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowConfetti(false);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Conditionnel: si les joueurs existent, calculer gagnant et perdant
   const sortedPlayers = state.players.length
@@ -69,6 +78,22 @@ export default function GameOver() {
     setIsDialogOpen(false);
   };
 
+  const handleReturnHome = () => {
+    dispatch({ type: "RESET_GAME" });
+  };
+
+  useEffect(() => {
+    // Vérifie si l'état a été réinitialisé, puis redirige
+    if (
+      state.players.length === 0 ||
+      state.players.every((player) =>
+        player.scores.every((score) => score === 0)
+      )
+    ) {
+      router.push("/");
+    }
+  }, [state.players, router]);
+
   const logoVariants = {
     hidden: { opacity: 0, scale: 0.5, rotate: -180 },
     visible: {
@@ -85,9 +110,8 @@ export default function GameOver() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4 relative"
-      >
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4 relative">
+      {showConfetti && <Confetti />}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,7 +172,7 @@ export default function GameOver() {
             </Button>
             <Separator className="my-4" />
             <Button
-              onClick={() => router.push("/")}
+              onClick={handleReturnHome}
               variant="outline"
               className="w-full"
             >

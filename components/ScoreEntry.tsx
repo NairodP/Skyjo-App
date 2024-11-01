@@ -108,7 +108,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     <>
       <Card className="w-full max-w-md border-none shadow-none p-0 m-0">
         <CardHeader className="w-full max-w-md border-none shadow-none p-0 m-0">
-          <CardTitle className="text-2xl font-bold text-center text-blue-600">
+          <CardTitle className="text-2xl font-bold text-center text-[#1a326e]">
             Scores de la manche {state.currentRound}
           </CardTitle>
           <CardDescription className="text-center">
