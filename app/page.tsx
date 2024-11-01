@@ -14,6 +14,7 @@ export default function HomePage() {
   const { state } = useGlobalState();
   const [showLogo, setShowLogo] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [showBackgroundLines, setShowBackgroundLines] = useState(false);
 
   const shouldShowNav =
     state.players.length > 0 &&
@@ -24,10 +25,10 @@ export default function HomePage() {
   useEffect(() => {
     const titleDuration = words.length * 40 + 500;
     const logoTimer = setTimeout(() => setShowLogo(true), titleDuration);
-    const contentTimer = setTimeout(
-      () => setShowContent(true),
-      titleDuration + 1000
-    );
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+      setShowBackgroundLines(true);
+    }, titleDuration + 1000);
     return () => {
       clearTimeout(logoTimer);
       clearTimeout(contentTimer);
@@ -69,15 +70,19 @@ export default function HomePage() {
   };
 
   return (
-    <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
+    <>
       {shouldShowNav && <Nav />}
-
+      {showBackgroundLines && (
+        // eslint-disable-next-line react/no-children-prop
+        <BackgroundLines className="absolute inset-0 h-full bg-sky-100" children={undefined} />
+      )}
       <motion.div
         className="flex flex-col items-center pt-16 px-2 min-h-screen relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
+
         <motion.div variants={itemVariants} className="mb-8">
           <TextGenerateEffect
             words={words}
@@ -148,6 +153,6 @@ export default function HomePage() {
           )}
         </AnimatePresence>
       </motion.div>
-    </BackgroundLines>
+    </>
   );
 }
