@@ -166,9 +166,9 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
       </Card>
 
       <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-[90%] rounded-lg border-sm">
           <DialogHeader>
-            <DialogTitle className="mt-2 text-2xl">
+            <DialogTitle className="text-[#1a326e] mt-2 text-2xl">
               Confirmer les scores
             </DialogTitle>
             <DialogDescription className="mt-2 text-lg">
@@ -195,6 +195,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
             <Button
               className="mt-2 text-lg"
               variant="destructive"
+              style={{ backgroundColor: "#9694ff" }}
               onClick={handleConfirm}
             >
               Confirmer
