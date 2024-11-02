@@ -76,6 +76,28 @@ export default function PlayerSetup() {
       return;
     }
 
+    if (
+      players.some(
+        (player) => player.name.includes("fab") && player.name.includes("grand")
+      )
+    ) {
+      toast({
+        description:
+          "Pseudo trop prétentieux. Votre pseudo ne peut pas contenir les mots 'fab' et 'grand' en même temps.",
+        variant: "destructive",
+        duration: 6000,
+      });
+      return;
+    }
+    if (players.some((player) => player.name.includes("magnifico"))) {
+      toast({
+        description: "Pseudo trop prétentieux. Celui-ci ne peut contenir 'Magnifico'. Merci de le modifier.",
+        variant: "destructive",
+        duration: 6000,
+      });
+      return;
+    }
+
     const uniqueNames = new Set(players.map((player) => player.name.trim()));
     if (uniqueNames.size !== players.length) {
       toast({
