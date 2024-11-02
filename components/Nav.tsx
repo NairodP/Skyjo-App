@@ -77,7 +77,7 @@ export default function Nav() {
               <span className="hidden md:inline">Nouvelle partie</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[90%] rounded-lg border-sm">
+          <DialogContent className="w-[90%] max-w-[450px] rounded-lg border-sm">
             <DialogHeader>
               <DialogTitle className="text-[#1a326e] mt-2 text-2xl">Confirmation</DialogTitle>
               <DialogDescription className="mt-2 text-lg">

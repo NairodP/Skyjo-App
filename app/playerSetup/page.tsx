@@ -99,7 +99,7 @@ export default function PlayerSetup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <BackButton />
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader>

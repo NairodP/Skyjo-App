@@ -8,6 +8,7 @@ import Nav from "@/components/Nav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Vortex } from "@/components/ui/vortex";
 import GlowingButton from "@/components/GlowingButton";
+import InformationImportante from "@/components/InformationImportante";
 import { BackgroundLines } from "@/components/ui/background-lines";
 
 export default function HomePage() {
@@ -67,6 +68,7 @@ export default function HomePage() {
 
   return (
       <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
+      <InformationImportante />  
       {shouldShowNav && <Nav />}
 
       <motion.div

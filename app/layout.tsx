@@ -5,6 +5,7 @@ import { Zilla_Slab } from 'next/font/google';
 import { cn } from "@/lib/utils";
 import { GlobalStateProvider } from "@/context/GlobalState";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,10 +44,11 @@ export default function RootLayout({
       </head>
 
       <body
-      className={cn(geistSans.variable, geistMono.variable, zillaSlab.variable, "bg-gray-100")}
+      className={cn(geistSans.variable, geistMono.variable, zillaSlab.variable, "bg-sky-100")}
       >
         <GlobalStateProvider>
           {children}
+          <Footer />
           <Toaster />
         </GlobalStateProvider>
       </body>

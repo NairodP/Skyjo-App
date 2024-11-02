@@ -166,7 +166,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
       </Card>
 
       <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
-        <DialogContent className="max-w-[90%] rounded-lg border-sm">
+        <DialogContent className="w-[90%] rounded-lg border-sm max-w-[450px]">
           <DialogHeader>
             <DialogTitle className="text-[#1a326e] mt-2 text-2xl">
               Confirmer les scores

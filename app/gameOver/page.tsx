@@ -110,7 +110,7 @@ export default function GameOver() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 p-4 relative">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
       {showConfetti && <Confetti />}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -184,7 +184,7 @@ export default function GameOver() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[90%] rounded-lg border-sm">
+        <DialogContent className="w-[90%] max-w-[450px] rounded-lg border-sm">
           <DialogHeader>
             <DialogTitle className="text-[#1a326e] mt-2 text-2xl">Nouvelle partie</DialogTitle>
             <DialogDescription className="mt-2 text-lg">

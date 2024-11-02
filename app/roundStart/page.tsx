@@ -8,7 +8,13 @@ import { useGlobalState } from "@/context/GlobalState";
 import ScoreEntry from "@/components/ScoreEntry";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 
 export default function RoundStart() {
@@ -52,9 +58,9 @@ export default function RoundStart() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-b from-blue-50 to-blue-100 p-4">
+    <div className="min-h-screen flex p-4">
       <div className="flex-grow flex  flex-col items-center justify-center">
-      {state.players.length > 0 && <Nav />}
+        {state.players.length > 0 && <Nav />}
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <AnimatePresence mode="wait">
@@ -68,12 +74,21 @@ export default function RoundStart() {
                   className="text-center"
                 >
                   <CardHeader>
-                    <CardTitle className="text-3xl font-bold text-[#421e69]">Manche {state.currentRound}</CardTitle>
-                    <CardDescription>Préparez-vous pour la prochaine manche !</CardDescription>
+                    <CardTitle className="text-3xl font-bold text-[#421e69]">
+                      Manche {state.currentRound}
+                    </CardTitle>
+                    <CardDescription>
+                      Préparez-vous pour la prochaine manche !
+                    </CardDescription>
                   </CardHeader>
                   <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    animate={{ scale: [1, 1.15, 1.05, 1] }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      times: [0, 0.3, 0.6, 1],
+                    }}
                     className="mb-6"
                   >
                     <Trophy size={64} className="mx-auto text-yellow-500" />
