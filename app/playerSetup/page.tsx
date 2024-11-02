@@ -78,7 +78,13 @@ export default function PlayerSetup() {
 
     if (
       players.some(
-        (player) => player.name.includes("fab") && player.name.includes("grand")
+        (player) =>
+          player.name
+            .trim()
+            .replace(/\s+/g, "")
+            .toLowerCase()
+            .includes("fab") &&
+          player.name.trim().replace(/\s+/g, "").toLowerCase().includes("grand")
       )
     ) {
       toast({
@@ -89,9 +95,18 @@ export default function PlayerSetup() {
       });
       return;
     }
-    if (players.some((player) => player.name.includes("magnifico"))) {
+    if (
+      players.some((player) =>
+        player.name
+          .trim()
+          .replace(/\s+/g, "")
+          .toLowerCase()
+          .includes("magnifico")
+      )
+    ) {
       toast({
-        description: "Pseudo trop prétentieux. Celui-ci ne peut contenir 'Magnifico'. Merci de le modifier.",
+        description:
+          "Pseudo trop prétentieux. Celui-ci ne peut contenir 'Magnifico'. Merci de le modifier.",
         variant: "destructive",
         duration: 6000,
       });
