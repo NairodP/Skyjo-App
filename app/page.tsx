@@ -14,7 +14,6 @@ export default function HomePage() {
   const { state } = useGlobalState();
   const [showLogo, setShowLogo] = useState(false);
   const [showContent, setShowContent] = useState(false);
-  const [showBackgroundLines, setShowBackgroundLines] = useState(false);
 
   const shouldShowNav =
     state.players.length > 0 &&
@@ -25,10 +24,7 @@ export default function HomePage() {
   useEffect(() => {
     const titleDuration = words.length * 40 + 500;
     const logoTimer = setTimeout(() => setShowLogo(true), titleDuration);
-    const contentTimer = setTimeout(() => {
-      setShowContent(true);
-      setShowBackgroundLines(true);
-    }, titleDuration + 1000);
+    const contentTimer = setTimeout(() => setShowContent(true), titleDuration + 1000);
     return () => {
       clearTimeout(logoTimer);
       clearTimeout(contentTimer);
@@ -70,19 +66,15 @@ export default function HomePage() {
   };
 
   return (
-    <>
+      <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
       {shouldShowNav && <Nav />}
-      {showBackgroundLines && (
-        // eslint-disable-next-line react/no-children-prop
-        <BackgroundLines className="absolute inset-0 min-h-screen bg-sky-100" children={undefined} />
-      )}
+
       <motion.div
         className="flex flex-col items-center pt-16 px-2 min-h-screen relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-
         <motion.div variants={itemVariants} className="mb-8">
           <TextGenerateEffect
             words={words}
@@ -96,11 +88,11 @@ export default function HomePage() {
               variants={logoVariants}
               initial="hidden"
               animate="visible"
-              className="mb-8 relative mx-auto rounded-md w-[calc(100%-4rem)]  h-[5rem] overflow-hidden"
+              className="mb-8 relative mx-auto rounded-md w-[calc(100%-4rem)]  h-[5rem] overflow-hidden max-w-[425px]"
             >
               <Vortex
                 backgroundColor="black"
-                className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
+                className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full  h-full"
               >
                 <Image
                   src="/image/skyjo-logo-title.png"
@@ -153,6 +145,6 @@ export default function HomePage() {
           )}
         </AnimatePresence>
       </motion.div>
-    </>
+    </BackgroundLines>
   );
 }
