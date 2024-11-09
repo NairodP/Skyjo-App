@@ -22,17 +22,31 @@ import { Home } from "lucide-react";
 import Confetti from "react-confetti";
 
 export default function GameOver() {
-  const { players, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore();
+  const {
+    players,
+    isGameOver,
+    setPlayers,
+    setCurrentRound,
+    setIsGameOver,
+    resetGame,
+  } = useGameStore();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  // Vérifier l'hydratation
   useEffect(() => {
-    if (!players.length) {
+    setIsHydrated(true);
+  }, []);
+
+  // Redirection seulement après hydratation
+  useEffect(() => {
+    if (isHydrated && !players.length && !isGameOver) {
       router.push("/playerSetup");
     }
-  }, [players, router]);
+  }, [isHydrated, players, isGameOver, router]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,6 +54,11 @@ export default function GameOver() {
     }, 8000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Ne rien afficher jusqu'à l'hydratation
+  if (!isHydrated) {
+    return null;
+  }
 
   const sortedPlayers = players.length
     ? [...players].sort((a, b) => {
@@ -70,7 +89,6 @@ export default function GameOver() {
   };
 
   const handleReturnHome = () => {
-    resetGame();
     router.push("/");
   };
 
@@ -165,7 +183,9 @@ export default function GameOver() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="w-[90%] max-w-[450px] rounded-lg border-sm">
           <DialogHeader>
-            <DialogTitle className="text-[#1a326e] mt-2 text-2xl">Nouvelle partie</DialogTitle>
+            <DialogTitle className="text-[#1a326e] mt-2 text-2xl">
+              Nouvelle partie
+            </DialogTitle>
             <DialogDescription className="mt-2 text-lg">
               Voulez-vous garder les mêmes joueurs pour la nouvelle partie ?
             </DialogDescription>
