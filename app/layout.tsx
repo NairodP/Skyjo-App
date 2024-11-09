@@ -1,9 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Zilla_Slab } from 'next/font/google';
+import { Zilla_Slab } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { GlobalStateProvider } from "@/context/GlobalState";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/Footer";
 
@@ -44,13 +43,16 @@ export default function RootLayout({
       </head>
 
       <body
-      className={cn(geistSans.variable, geistMono.variable, zillaSlab.variable, "bg-sky-100")}
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          zillaSlab.variable,
+          "bg-sky-100"
+        )}
       >
-        <GlobalStateProvider>
-          {children}
-          <Footer />
-          <Toaster />
-        </GlobalStateProvider>
+        {children}
+        <Footer />
+        <Toaster />
       </body>
     </html>
   );

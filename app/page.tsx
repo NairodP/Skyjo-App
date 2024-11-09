@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/store/gameStore";
-import Nav from "@/components/Nav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Vortex } from "@/components/ui/vortex";
 import GlowingButton from "@/components/GlowingButton";
@@ -12,23 +11,26 @@ import InformationImportante from "@/components/InformationImportante";
 import { BackgroundLines } from "@/components/ui/background-lines";
 
 export default function HomePage() {
-  const { players, roundScores } = useGameStore();
+  const { resetGame } = useGameStore();
   const [showLogo, setShowLogo] = useState(false);
   const [showContent, setShowContent] = useState(false);
-
-  const shouldShowNav = players.length > 0 && roundScores.length > 0;
 
   const words = "Bienvenue sur l'assistant";
 
   useEffect(() => {
+    resetGame();
+
     const titleDuration = words.length * 40 + 500;
     const logoTimer = setTimeout(() => setShowLogo(true), titleDuration);
-    const contentTimer = setTimeout(() => setShowContent(true), titleDuration + 1000);
+    const contentTimer = setTimeout(
+      () => setShowContent(true),
+      titleDuration + 1000
+    );
     return () => {
       clearTimeout(logoTimer);
       clearTimeout(contentTimer);
     };
-  }, []);
+  }, [resetGame]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -66,8 +68,7 @@ export default function HomePage() {
 
   return (
     <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
-      <InformationImportante />  
-      {shouldShowNav && <Nav />}
+      <InformationImportante />
 
       <motion.div
         className="flex flex-col items-center pt-16 px-2 min-h-screen relative z-10"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check, Users } from "lucide-react";
 import {
   Card,
@@ -23,25 +23,32 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Player } from "@/types/game";
 import { useToast } from "@/hooks/use-toast";
-import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
+import { useGameStore } from "@/store/gameStore";
 import { motion, AnimatePresence } from "framer-motion";
 import BackButton from "@/components/BackButton";
 
 export default function PlayerSetup() {
   const router = useRouter();
-  const { setPlayers, setCurrentRound, setIsGameOver } = useGameStore(); // Use the Zustand store
+  const { players, setPlayers, setCurrentRound, setIsGameOver } =
+    useGameStore();
   const [playerCount, setPlayerCount] = useState<number>(2);
-  const [players, setPlayersState] = useState<Player[]>([
+  const [localPlayers, setLocalPlayers] = useState<Player[]>([
     { name: "", scores: [] },
     { name: "", scores: [] },
   ]);
   const [showValidation, setShowValidation] = useState<boolean>(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    if (players.length > 0) {
+      router.push("/roundStart");
+    }
+  }, [players, router]);
+
   const handlePlayerCountChange = (value: string): void => {
     const count = parseInt(value);
     setPlayerCount(count);
-    setPlayersState((prev) => {
+    setLocalPlayers((prev) => {
       const newPlayers = [...prev];
       while (newPlayers.length < count) {
         newPlayers.push({ name: "", scores: [] });
@@ -54,9 +61,9 @@ export default function PlayerSetup() {
   };
 
   const handlePlayerNameChange = (index: number, name: string): void => {
-    const newPlayers = [...players];
+    const newPlayers = [...localPlayers];
     newPlayers[index] = { ...newPlayers[index], name };
-    setPlayersState(newPlayers);
+    setLocalPlayers(newPlayers);
   };
 
   const resetZoom = () => {
@@ -66,7 +73,7 @@ export default function PlayerSetup() {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    if (players.some((player) => player.name.trim() === "")) {
+    if (localPlayers.some((player) => player.name.trim() === "")) {
       toast({
         description:
           "Veuillez saisir le pseudo de l'ensemble des participants.",
@@ -77,7 +84,7 @@ export default function PlayerSetup() {
     }
 
     if (
-      players.some(
+      localPlayers.some(
         (player) =>
           player.name
             .trim()
@@ -96,7 +103,7 @@ export default function PlayerSetup() {
       return;
     }
     if (
-      players.some((player) =>
+      localPlayers.some((player) =>
         player.name
           .trim()
           .replace(/\s+/g, "")
@@ -113,8 +120,10 @@ export default function PlayerSetup() {
       return;
     }
 
-    const uniqueNames = new Set(players.map((player) => player.name.trim()));
-    if (uniqueNames.size !== players.length) {
+    const uniqueNames = new Set(
+      localPlayers.map((player) => player.name.trim())
+    );
+    if (uniqueNames.size !== localPlayers.length) {
       toast({
         description: "Deux joueurs ne peuvent pas avoir le même pseudo.",
         variant: "destructive",
@@ -123,9 +132,9 @@ export default function PlayerSetup() {
       return;
     }
 
-    setPlayers(players); // Update players in the Zustand store
-    setCurrentRound(1); // Set current round in the Zustand store
-    setIsGameOver(false); // Set game over state in the Zustand store
+    setPlayers(localPlayers);
+    setCurrentRound(1);
+    setIsGameOver(false);
 
     setShowValidation(true);
     setTimeout(() => {
@@ -171,7 +180,7 @@ export default function PlayerSetup() {
             </div>
 
             <AnimatePresence>
-              {players.map((player, index) => (
+              {localPlayers.map((player, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: -10 }}

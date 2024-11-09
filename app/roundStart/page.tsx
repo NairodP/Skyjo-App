@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, ArrowRight } from "lucide-react";
-import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
+import { useGameStore } from "@/store/gameStore";
 import ScoreEntry from "@/components/ScoreEntry";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
@@ -15,24 +15,23 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 
 export default function RoundStart() {
   const router = useRouter();
-  const { players, currentRound, setCurrentRound, setIsGameOver } = useGameStore(); // Use the Zustand store
+  const { players, isGameOver, currentRound, setCurrentRound, setIsGameOver } =
+    useGameStore();
   const [showScoreEntry, setShowScoreEntry] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const shouldWarn = players.length > 0 || currentRound > 1;
-  useBeforeUnloadWarning(shouldWarn);
-
   useEffect(() => {
-    if (!players.length) {
+    if (isGameOver) {
+      router.push("/gameOver");
+    } else if (!isGameOver && !players.length || !isGameOver && !currentRound) {
       router.push("/playerSetup");
     } else {
       setIsLoading(false);
     }
-  }, [players, router]);
+  }, [players, currentRound, router, isGameOver]);
 
   if (isLoading) {
     return null;

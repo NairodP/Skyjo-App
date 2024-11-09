@@ -37,10 +37,10 @@ export default function InformationImportante() {
             <DialogContent className="w-[90%] max-w-[450px] rounded-lg border-sm shadow-lg">
               <DialogHeader>
                 <DialogTitle className="text-[#1a326e] text-2xl mt-3">
-                  Information Importante
+                  Règles du jeu
                 </DialogTitle>
                 <DialogDescription className="pt-2 mt-2 text-lg text-gray-700">
-                  Afin de ne pas compliquer l&apos;application, elle n&apos;est pas connectée à une base de données. Veuillez donc ne pas rafraîchir la page lorsque vous êtes en partie, sinon les données comme les pseudos, les scores ou encore les manches seront perdus.
+                On dispose 12 cartes devant soit faces cachées. Chaque joueur à son tour prend la première carte de la pioche ou de la défausse. S’il prend une carte visible de la défausse il doit échanger cette carte avec l’une de ses cartes (cachée ou visible) et la poser face visible. Avec une carte de la pioche il peut la défausser directement, mais doit révéler une de ses cartes. Il est possible de défausser 3 cartes d’un coup si elles sont identiques et dans une même colonne. Lorsqu’un joueur a révélé toutes ses cartes, le tour se termine puis la manche s’arrête. Si le premier joueur a avoir révélé toutes ses cartes n&apos;a pas <strong>strictement</strong> le moins de points, alors son score est doublé ! Le jeu se joue en plusieurs manches, l&apos;objectif est de totaliser le moins de point possible. Le jeu se termine lorsqu&apos;un joueur atteint 100 points. Bonne chance !
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>

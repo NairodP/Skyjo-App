@@ -18,7 +18,7 @@ import {
 import { motion } from "framer-motion";
 
 export default function Nav() {
-  const { players, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore(); // Use the Zustand store
+  const { players, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isScoreDialogOpen, setIsScoreDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);

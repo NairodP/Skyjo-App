@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScoreTable from "@/components/ScoreTable";
-import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
+import { useGameStore } from "@/store/gameStore";
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -15,7 +15,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 import { Vortex } from "@/components/ui/vortex";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
@@ -23,14 +22,11 @@ import { Home } from "lucide-react";
 import Confetti from "react-confetti";
 
 export default function GameOver() {
-  const { players, currentRound, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore(); // Use the Zustand store
+  const { players, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
-
-  const shouldWarn = players.length > 0 || currentRound > 1;
-  useBeforeUnloadWarning(shouldWarn);
 
   useEffect(() => {
     if (!players.length) {
@@ -45,7 +41,6 @@ export default function GameOver() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Conditionnel: si les joueurs existent, calculer gagnant et perdant
   const sortedPlayers = players.length
     ? [...players].sort((a, b) => {
         const totalA = a.scores.reduce((sum, score) => sum + score, 0);
@@ -60,9 +55,7 @@ export default function GameOver() {
   const handleResetGame = () => {
     if (!keepPlayers) {
       resetGame();
-      setTimeout(() => {
-        router.push("/playerSetup");
-      }, 0);
+      router.push("/playerSetup");
     } else {
       setCurrentRound(1);
       setIsGameOver(false);
@@ -71,28 +64,15 @@ export default function GameOver() {
         scores: [],
       }));
       setPlayers(updatedPlayers);
-      setTimeout(() => {
-        router.push("/roundStart");
-      }, 0);
+      router.push("/roundStart");
     }
     setIsDialogOpen(false);
   };
 
   const handleReturnHome = () => {
     resetGame();
+    router.push("/");
   };
-
-  useEffect(() => {
-    // Vérifie si l'état a été réinitialisé, puis redirige
-    if (
-      players.length === 0 ||
-      players.every((player) =>
-        player.scores.every((score) => score === 0)
-      )
-    ) {
-      router.push("/");
-    }
-  }, [players, router]);
 
   const logoVariants = {
     hidden: { opacity: 0, scale: 0.5, rotate: -180 },
@@ -143,7 +123,6 @@ export default function GameOver() {
             Fin de la partie
           </h2>
 
-          {/* Afficher seulement si winner et loser existent */}
           {winner && loser ? (
             <div className="text-center mb-4 p-4 md:p-6">
               <p className="text-lg md:text-xl">
