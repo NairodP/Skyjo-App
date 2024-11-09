@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore";
 import Nav from "@/components/Nav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Vortex } from "@/components/ui/vortex";
@@ -12,13 +12,11 @@ import InformationImportante from "@/components/InformationImportante";
 import { BackgroundLines } from "@/components/ui/background-lines";
 
 export default function HomePage() {
-  const { state } = useGlobalState();
+  const { players, roundScores } = useGameStore();
   const [showLogo, setShowLogo] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
-  const shouldShowNav =
-    state.players.length > 0 &&
-    state.players.some((player) => player.scores.some((score) => score > 0));
+  const shouldShowNav = players.length > 0 && roundScores.length > 0;
 
   const words = "Bienvenue sur l'assistant";
 
@@ -67,7 +65,7 @@ export default function HomePage() {
   };
 
   return (
-      <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
+    <BackgroundLines className="min-h-screen bg-sky-100 text-blue-900">
       <InformationImportante />  
       {shouldShowNav && <Nav />}
 

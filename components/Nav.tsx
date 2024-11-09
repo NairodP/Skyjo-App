@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw, Table } from "lucide-react";
 import ScoreTable from "./ScoreTable";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -18,24 +18,24 @@ import {
 import { motion } from "framer-motion";
 
 export default function Nav() {
-  const { state, dispatch } = useGlobalState();
+  const { players, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore(); // Use the Zustand store
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isScoreDialogOpen, setIsScoreDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
   const router = useRouter();
 
-  const resetGame = () => {
+  const handleResetGame = () => {
     if (!keepPlayers) {
-      dispatch({ type: "RESET_GAME" });
+      resetGame();
       router.push("/playerSetup");
     } else {
-      dispatch({ type: "SET_CURRENT_ROUND", payload: 1 });
-      dispatch({ type: "SET_IS_GAME_OVER", payload: false });
-      const updatedPlayers = state.players.map((player) => ({
+      setCurrentRound(1);
+      setIsGameOver(false);
+      const updatedPlayers = players.map((player) => ({
         ...player,
         scores: [],
       }));
-      dispatch({ type: "SET_PLAYERS", payload: updatedPlayers });
+      setPlayers(updatedPlayers);
     }
     setIsDialogOpen(false);
   };
@@ -60,7 +60,7 @@ export default function Nav() {
           <DialogHeader>
             <DialogTitle>Scores</DialogTitle>
           </DialogHeader>
-          <ScoreTable players={state.players} />
+          <ScoreTable players={players} />
         </DialogContent>
       </Dialog>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -107,7 +107,7 @@ export default function Nav() {
                 className="mt-2 text-lg"
                 variant="destructive"
                 style={{ backgroundColor: "#fbb6ff" }}
-                onClick={resetGame}
+                onClick={handleResetGame}
               >
                 Oui, réinitialiser
               </Button>

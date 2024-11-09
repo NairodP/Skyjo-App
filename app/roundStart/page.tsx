@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, ArrowRight } from "lucide-react";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
 import ScoreEntry from "@/components/ScoreEntry";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/Nav";
@@ -19,20 +19,20 @@ import useBeforeUnloadWarning from "@/hooks/useReloadWarning";
 
 export default function RoundStart() {
   const router = useRouter();
-  const { dispatch, state } = useGlobalState();
+  const { players, currentRound, setCurrentRound, setIsGameOver } = useGameStore(); // Use the Zustand store
   const [showScoreEntry, setShowScoreEntry] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const shouldWarn = state.players.length > 0 || state.currentRound > 1;
+  const shouldWarn = players.length > 0 || currentRound > 1;
   useBeforeUnloadWarning(shouldWarn);
 
   useEffect(() => {
-    if (!state.players.length) {
+    if (!players.length) {
       router.push("/playerSetup");
     } else {
       setIsLoading(false);
     }
-  }, [state.players, router]);
+  }, [players, router]);
 
   if (isLoading) {
     return null;
@@ -43,24 +43,24 @@ export default function RoundStart() {
   };
 
   const handleScoreSubmitted = () => {
-    const isGameOver = state.players.some(
+    const isGameOver = players.some(
       (player) =>
         player.scores.reduce((total, score) => total + score, 0) >= 100
     );
 
     if (isGameOver) {
-      dispatch({ type: "SET_IS_GAME_OVER", payload: true });
+      setIsGameOver(true);
       router.push("/gameOver");
     } else {
-      dispatch({ type: "SET_CURRENT_ROUND", payload: state.currentRound + 1 });
+      setCurrentRound(currentRound + 1);
       setShowScoreEntry(false);
     }
   };
 
   return (
     <div className="min-h-screen flex p-4">
-      <div className="flex-grow flex  flex-col items-center justify-center">
-        {state.players.length > 0 && <Nav />}
+      <div className="flex-grow flex flex-col items-center justify-center">
+        {players.length > 0 && <Nav />}
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <AnimatePresence mode="wait">
@@ -75,7 +75,7 @@ export default function RoundStart() {
                 >
                   <CardHeader>
                     <CardTitle className="text-3xl font-bold text-[#421e69]">
-                      Manche {state.currentRound}
+                      Manche {currentRound}
                     </CardTitle>
                     <CardDescription>
                       Préparez-vous pour la prochaine manche !

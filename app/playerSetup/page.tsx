@@ -23,15 +23,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Player } from "@/types/game";
 import { useToast } from "@/hooks/use-toast";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
 import { motion, AnimatePresence } from "framer-motion";
 import BackButton from "@/components/BackButton";
 
 export default function PlayerSetup() {
   const router = useRouter();
-  const { dispatch } = useGlobalState();
+  const { setPlayers, setCurrentRound, setIsGameOver } = useGameStore(); // Use the Zustand store
   const [playerCount, setPlayerCount] = useState<number>(2);
-  const [players, setPlayers] = useState<Player[]>([
+  const [players, setPlayersState] = useState<Player[]>([
     { name: "", scores: [] },
     { name: "", scores: [] },
   ]);
@@ -41,7 +41,7 @@ export default function PlayerSetup() {
   const handlePlayerCountChange = (value: string): void => {
     const count = parseInt(value);
     setPlayerCount(count);
-    setPlayers((prev) => {
+    setPlayersState((prev) => {
       const newPlayers = [...prev];
       while (newPlayers.length < count) {
         newPlayers.push({ name: "", scores: [] });
@@ -56,7 +56,7 @@ export default function PlayerSetup() {
   const handlePlayerNameChange = (index: number, name: string): void => {
     const newPlayers = [...players];
     newPlayers[index] = { ...newPlayers[index], name };
-    setPlayers(newPlayers);
+    setPlayersState(newPlayers);
   };
 
   const resetZoom = () => {
@@ -123,9 +123,9 @@ export default function PlayerSetup() {
       return;
     }
 
-    dispatch({ type: "SET_PLAYERS", payload: players });
-    dispatch({ type: "SET_CURRENT_ROUND", payload: 1 });
-    dispatch({ type: "SET_IS_GAME_OVER", payload: false });
+    setPlayers(players); // Update players in the Zustand store
+    setCurrentRound(1); // Set current round in the Zustand store
+    setIsGameOver(false); // Set game over state in the Zustand store
 
     setShowValidation(true);
     setTimeout(() => {

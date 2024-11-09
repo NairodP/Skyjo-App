@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScoreTable from "@/components/ScoreTable";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore"; // Import the Zustand store
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -23,20 +23,20 @@ import { Home } from "lucide-react";
 import Confetti from "react-confetti";
 
 export default function GameOver() {
-  const { state, dispatch } = useGlobalState();
+  const { players, currentRound, setPlayers, setCurrentRound, setIsGameOver, resetGame } = useGameStore(); // Use the Zustand store
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [keepPlayers, setKeepPlayers] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
 
-  const shouldWarn = state.players.length > 0 || state.currentRound > 1;
+  const shouldWarn = players.length > 0 || currentRound > 1;
   useBeforeUnloadWarning(shouldWarn);
 
   useEffect(() => {
-    if (!state.players.length) {
+    if (!players.length) {
       router.push("/playerSetup");
     }
-  }, [state.players, router]);
+  }, [players, router]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,8 +46,8 @@ export default function GameOver() {
   }, []);
 
   // Conditionnel: si les joueurs existent, calculer gagnant et perdant
-  const sortedPlayers = state.players.length
-    ? [...state.players].sort((a, b) => {
+  const sortedPlayers = players.length
+    ? [...players].sort((a, b) => {
         const totalA = a.scores.reduce((sum, score) => sum + score, 0);
         const totalB = b.scores.reduce((sum, score) => sum + score, 0);
         return totalA - totalB;
@@ -57,20 +57,20 @@ export default function GameOver() {
   const winner = sortedPlayers[0];
   const loser = sortedPlayers[sortedPlayers.length - 1];
 
-  const resetGame = () => {
+  const handleResetGame = () => {
     if (!keepPlayers) {
-      dispatch({ type: "RESET_GAME" });
+      resetGame();
       setTimeout(() => {
         router.push("/playerSetup");
       }, 0);
     } else {
-      dispatch({ type: "SET_CURRENT_ROUND", payload: 1 });
-      dispatch({ type: "SET_IS_GAME_OVER", payload: false });
-      const updatedPlayers = state.players.map((player) => ({
+      setCurrentRound(1);
+      setIsGameOver(false);
+      const updatedPlayers = players.map((player) => ({
         ...player,
         scores: [],
       }));
-      dispatch({ type: "SET_PLAYERS", payload: updatedPlayers });
+      setPlayers(updatedPlayers);
       setTimeout(() => {
         router.push("/roundStart");
       }, 0);
@@ -79,20 +79,20 @@ export default function GameOver() {
   };
 
   const handleReturnHome = () => {
-    dispatch({ type: "RESET_GAME" });
+    resetGame();
   };
 
   useEffect(() => {
     // Vérifie si l'état a été réinitialisé, puis redirige
     if (
-      state.players.length === 0 ||
-      state.players.every((player) =>
+      players.length === 0 ||
+      players.every((player) =>
         player.scores.every((score) => score === 0)
       )
     ) {
       router.push("/");
     }
-  }, [state.players, router]);
+  }, [players, router]);
 
   const logoVariants = {
     hidden: { opacity: 0, scale: 0.5, rotate: -180 },
@@ -162,7 +162,7 @@ export default function GameOver() {
             </p>
           )}
 
-          <ScoreTable players={state.players} />
+          <ScoreTable players={players} />
           <CardFooter className="p-6 pb-12 flex flex-col text-center">
             <Button
               onClick={() => setIsDialogOpen(true)}
@@ -213,7 +213,7 @@ export default function GameOver() {
               className="mt-2 text-lg"
               variant="destructive"
               style={{ backgroundColor: "#fbb6ff" }}
-              onClick={resetGame}
+              onClick={handleResetGame}
             >
               Confirmer
             </Button>

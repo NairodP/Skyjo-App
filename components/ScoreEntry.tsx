@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { RoundScore, Player } from "@/types/game";
-import { useGlobalState } from "@/context/GlobalState";
+import { useGameStore } from "@/store/gameStore";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -38,7 +38,7 @@ interface ScoreEntryProps {
 
 export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
   const router = useRouter();
-  const { state, dispatch } = useGlobalState();
+  const { players, currentRound, setPlayers, addRoundScore, setCurrentRound, setIsGameOver } = useGameStore();
   const { toast } = useToast();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [submittedScores, setSubmittedScores] = useState<RoundScore | null>(
@@ -51,8 +51,8 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
 
     // Créer les nouveaux scores
     const newRoundScores: RoundScore = {
-      round: state.currentRound,
-      scores: state.players.map((_, index) =>
+      round: currentRound,
+      scores: players.map((_, index) =>
         parseInt(formData.get(`score-${index}`) as string)
       ),
     };
@@ -66,14 +66,14 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     if (!submittedScores) return;
 
     // Mettre à jour les scores des joueurs
-    const updatedPlayers: Player[] = state.players.map((player, index) => ({
+    const updatedPlayers: Player[] = players.map((player, index) => ({
       ...player,
       scores: [...player.scores, submittedScores.scores[index]],
     }));
 
     // Mettre à jour le state
-    dispatch({ type: "SET_PLAYERS", payload: updatedPlayers });
-    dispatch({ type: "ADD_ROUND_SCORE", payload: submittedScores });
+    setPlayers(updatedPlayers);
+    addRoundScore(submittedScores);
 
     // Vérifier si c'est la fin de la partie
     const isGameOver = updatedPlayers.some(
@@ -82,14 +82,11 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     );
 
     if (isGameOver) {
-      dispatch({ type: "SET_IS_GAME_OVER", payload: true });
+      setIsGameOver(true);
       router.push("/gameOver");
     } else {
       // Passer à la manche suivante
-      dispatch({
-        type: "SET_CURRENT_ROUND",
-        payload: state.currentRound + 1,
-      });
+      setCurrentRound(currentRound + 1);
 
       toast({
         title: "Scores enregistrés",
@@ -109,7 +106,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
       <Card className="w-full max-w-md border-none shadow-none p-0 m-0">
         <CardHeader className="w-full max-w-md border-none shadow-none p-0 m-0">
           <CardTitle className="text-2xl font-bold text-center text-[#1a326e]">
-            Scores de la manche {state.currentRound}
+            Scores de la manche {currentRound}
           </CardTitle>
           <CardDescription className="text-center">
             Entrez les scores pour chaque joueur
@@ -118,7 +115,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
         <CardContent className="w-full max-w-md border-none shadow-none p-0 m-0">
           <form onSubmit={handleSubmit} noValidate className="space-y-6 mt-6">
             <AnimatePresence>
-              {state.players.map((player, index) => (
+              {players.map((player, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: -10 }}
@@ -177,7 +174,7 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
           </DialogHeader>
           <div className="space-y-2">
             {submittedScores &&
-              state.players.map((player, index) => (
+              players.map((player, index) => (
                 <div key={index} className="flex justify-between">
                   <span>{player.name}</span>
                   <span>{submittedScores.scores[index]}</span>
