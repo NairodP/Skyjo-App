@@ -6,7 +6,7 @@ import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ScoreTable from "@/components/ScoreTable";
 import { useGameStore } from "@/store/gameStore";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,7 @@ import {
 import { Vortex } from "@/components/ui/vortex";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { Home } from "lucide-react";
+import { Home, ArrowRight } from "lucide-react";
 import Confetti from "react-confetti";
 
 export default function GameOver() {
@@ -107,6 +107,25 @@ export default function GameOver() {
     },
   };
 
+  const scrollIndicatorVariants = {
+    initial: { opacity: 0, y: -10 },
+    animate: {
+      opacity: [0.5, 1, 0.5],
+      y: 0,
+      transition: {
+        opacity: {
+          repeat: Infinity,
+          duration: 2,
+          ease: "easeInOut",
+        },
+        y: {
+          duration: 0.5,
+          ease: "easeOut",
+        },
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       {showConfetti && <Confetti />}
@@ -158,6 +177,19 @@ export default function GameOver() {
               Préparez-vous pour une nouvelle partie !
             </p>
           )}
+
+          <AnimatePresence>
+            <motion.div
+              key="scroll-indicator"
+              variants={scrollIndicatorVariants}
+              initial="initial"
+              animate="animate"
+              className="text-center text-sm text-gray-500 mb-2"
+            >
+              Faites défiler pour voir tous les scores
+              <ArrowRight className="inline-block ml-1 w-4 h-4" />
+            </motion.div>
+          </AnimatePresence>
 
           <ScoreTable players={players} />
           <CardFooter className="p-6 pb-12 flex flex-col text-center">

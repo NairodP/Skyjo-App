@@ -41,20 +41,16 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
   const { players, currentRound, setPlayers, addRoundScore, setCurrentRound, setIsGameOver } = useGameStore();
   const { toast } = useToast();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const [submittedScores, setSubmittedScores] = useState<RoundScore | null>(
-    null
-  );
+  const [submittedScores, setSubmittedScores] = useState<RoundScore | null>(null);
+  const [playerScores, setPlayerScores] = useState<string[]>(players.map(() => "0"));
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
 
     // Créer les nouveaux scores
     const newRoundScores: RoundScore = {
       round: currentRound,
-      scores: players.map((_, index) =>
-        parseInt(formData.get(`score-${index}`) as string)
-      ),
+      scores: playerScores.map(score => parseInt(score)),
     };
 
     // Stocker les scores soumis
@@ -101,6 +97,12 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
     setIsConfirmDialogOpen(false);
   };
 
+  const handleScoreChange = (index: number, value: string) => {
+    const newScores = [...playerScores];
+    newScores[index] = parseInt(value).toString(); // Updated to ensure string value
+    setPlayerScores(newScores);
+  };
+
   return (
     <>
       <Card className="w-full max-w-md border-none shadow-none p-0 m-0">
@@ -130,9 +132,14 @@ export default function ScoreEntry({ onScoreSubmitted }: ScoreEntryProps) {
                   >
                     {player.name}
                   </Label>
-                  <Select name={`score-${index}`} defaultValue="0">
+                  <Select
+                    value={playerScores[index]}
+                    onValueChange={(value) => handleScoreChange(index, value)}
+                  >
                     <SelectTrigger id={`score-${index}`} className="w-full">
-                      <SelectValue />
+                      <SelectValue>
+                        {playerScores[index]}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {[...Array(201)].map((_, i) => (

@@ -51,8 +51,8 @@ export default function Nav() {
           }}
           onClick={() => setIsScoreDialogOpen(true)}
         >
-          <Table className="w-4 h-4 md:mr-2" />
-          <span className="hidden md:inline">Voir les scores</span>
+          <Table className="w-4 h-4 md:mr-1" />
+          <span className="md:inline">Voir les scores</span>
         </Button>
       </motion.div>
       <Dialog open={isScoreDialogOpen} onOpenChange={setIsScoreDialogOpen}>
@@ -73,8 +73,8 @@ export default function Nav() {
                 backgroundImage: "linear-gradient(to right, #e14df7, #7931c0)",
               }}
             >
-              <RefreshCw className="w-4 h-4 md:mr-2" />
-              <span className="hidden md:inline">Nouvelle partie</span>
+              <RefreshCw className="w-4 h-4 md:mr-1" />
+              <span className="md:inline">Nouvelle partie</span>
             </Button>
           </DialogTrigger>
           <DialogContent className="w-[90%] max-w-[450px] rounded-lg border-sm">

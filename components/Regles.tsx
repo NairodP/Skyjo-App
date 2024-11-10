@@ -26,10 +26,11 @@ export default function Regles() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="p-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50 rounded-full shadow-lg cursor-pointer"
+                className="p-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50 rounded-full shadow-lg cursor-pointer flex items-center"
                 title="Règles du jeu"
               >
                 <Info className="text-white w-6 h-6" />
+                <span className="text-white px-2">Règles du jeu</span>
               </motion.div>
             </DialogTrigger>
             
